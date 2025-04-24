@@ -1,0 +1,51 @@
+{{ 'chat.css' | asset_url | stylesheet_tag }}
+
+<div class="shop-ai-chat-container">
+  <div class="shop-ai-chat-bubble" style="background-color: {{ block.settings.chat_bubble_color }}">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10a9.957 9.957 0 0 1-4.708-1.175L2 22l1.176-5.29A9.966 9.966 0 0 1 2 12C2 6.477 6.477 2 12 2zm0 2a8 8 0 0 0-8 8c0 1.335.326 2.618.94 3.766l.35.654-.656 2.946 2.948-.654.653.349A7.955 7.955 0 0 0 12 20a8 8 0 0 0 0-16zm1 3v5h4v2h-6V7h2z" fill="currentColor"/></svg>
+  </div>
+  
+  <div class="shop-ai-chat-window">
+    <div class="shop-ai-chat-header">
+      <div>{{ 'chat.title' | t }}</div>
+      <button class="shop-ai-chat-close">✕</button>
+    </div>
+    
+    <div class="shop-ai-chat-messages">
+      <!-- Messages will be added here by JavaScript -->
+    </div>
+    
+    <div class="shop-ai-chat-input">
+      <input type="text" placeholder="{{ 'chat.inputPlaceholder' | t }}">
+      <button class="shop-ai-chat-send">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="22" y1="2" x2="11" y2="13"></line>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+{{ 'chat.js' | asset_url | script_tag }}
+
+{% schema %}
+{
+  "name": "AI Chat Assistant",
+  "target": "body",
+  "settings": [
+    {
+      "type": "color",
+      "id": "chat_bubble_color",
+      "label": "Chat Bubble Color",
+      "default": "#5046e4"
+    },
+    {
+      "type": "text",
+      "id": "welcome_message",
+      "label": "Welcome Message",
+      "default": "👋 Hi there! How can I help you today?"
+    }
+  ]
+}
+{% endschema %}
