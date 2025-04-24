@@ -55,29 +55,20 @@ module.exports = async (req, res) => {
     
     console.log("Attempting to use Claude API with model claude-3-5-sonnet-latest");
     
-    // Format the conversation history into a Human/Assistant format
-    let formattedPrompt = "Human: You are a helpful store assistant for an e-commerce shop. Answer the customer's questions in a friendly, helpful way.\n\nAssistant: I'll be happy to help answer any questions about products, shipping, returns, or anything else about the store!\n\n";
+    // Define system instructions
+    const systemInstruction = 'You are a helpful store assistant for an e-commerce shop. Answer the customer\'s questions in a friendly, helpful way about products, shipping, returns, or anything else about the store.';
     
-    // Add previous messages
-    if (conversationHistory.length > 1) {
-      for (let i = 0; i < conversationHistory.length - 1; i++) {
-        const msg = conversationHistory[i];
-        formattedPrompt += `${msg.role === 'user' ? 'Human' : 'Assistant'}: ${msg.content}\n\n`;
-      }
-    }
-    
-    // Add the current message
-    formattedPrompt += `Human: ${message}\n\nAssistant:`;
-    
-    // Generate response from Claude using completions API
+    // Generate response from Claude using messages API with system parameter
     const response = await anthropic.messages.create({
       model: 'claude-3-5-sonnet-latest',
       max_tokens: 1000,
+      system: systemInstruction,
       messages: conversationHistory
     });
     
     // Extract assistant's response
-    const assistantMessage = response.content;
+    // Content is an array of objects, we need to extract the text
+    const assistantMessage = response.content[0].text;
     
     // Add assistant response to history
     conversationHistory.push({ role: 'assistant', content: assistantMessage });
