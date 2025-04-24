@@ -72,8 +72,8 @@ document.addEventListener('DOMContentLoaded', function() {
   // Stream the response from the API
   async function streamResponse(userMessage) {
     try {
-      // Base API URL
-      const baseUrl = 'https://shop-ai-agent.vercel.app';
+      // Base API URL from environment config
+      const baseUrl = window.SHOP_AI_CONFIG?.baseUrl;
       
       // Create message element for the assistant's response
       const messageElement = document.createElement('div');
@@ -154,12 +154,12 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Regular non-streaming API response
   async function regularResponse(userMessage) {
-    // Get your deployed Vercel URL
-    const apiUrl = 'https://shop-ai-agent.vercel.app/api/chat';
+    // Get base URL from environment config
+    const baseUrl = window.SHOP_AI_CONFIG?.baseUrl;
     
     // First check if the API is reachable
     try {
-      const healthCheck = await fetch('https://shop-ai-agent.vercel.app/api/health');
+      const healthCheck = await fetch(`${baseUrl}/api/health`);
       if (!healthCheck.ok) {
         console.warn('Health check failed, API may be down');
       }
@@ -167,7 +167,7 @@ document.addEventListener('DOMContentLoaded', function() {
       console.error('Health check error:', healthError);
     }
     
-    const response = await fetch(apiUrl, {
+    const response = await fetch(`${baseUrl}/api/chat`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

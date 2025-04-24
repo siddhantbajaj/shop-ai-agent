@@ -27,6 +27,12 @@
   </div>
 </div>
 
+<script>
+  window.SHOP_AI_CONFIG = {
+    baseUrl: "{{ env.BASE_URL }}"
+  };
+</script>
+
 {{ 'chat.js' | asset_url | script_tag }}
 
 {% schema %}
