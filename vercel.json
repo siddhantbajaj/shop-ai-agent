@@ -11,6 +11,7 @@
     { "src": "/api/health", "dest": "/api/health.js" },
     { "src": "/api/status", "dest": "/api/status.js" },
     { "src": "/api/chat", "dest": "/api/chat.js" },
+    { "src": "/api/stream", "dest": "/api/stream.js" },
     { "src": "/api/(.*)", "dest": "/api/$1" }
   ]
 }
