@@ -1,6 +1,10 @@
 # Environment Configuration
 .env
 .env.*
+!.env.example
+
+# Vercel
+.vercel
 
 # Dependency directory
 node_modules

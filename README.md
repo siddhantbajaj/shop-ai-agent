@@ -1,16 +1,17 @@
-# Shopify App Template - Extension only
+# Shop AI Agent - Claude-powered Chat for Shopify Stores
 
-This is a template for building an [extension-only Shopify app](https://shopify.dev/docs/apps/build/app-extensions/build-extension-only-app). It contains the basics for building a Shopify app that uses only app extensions.
+A Shopify app that adds a Claude-powered AI chat interface to your store. This enables customers to ask questions and get intelligent responses about your products and services.
 
-This template doesn't include a server or the ability to embed a page in the Shopify Admin. If you want either of these capabilities, choose the [Remix app template](https://github.com/Shopify/shopify-app-template-remix) instead.
+This app consists of:
+1. A Shopify theme extension that adds a chat bubble to your store
+2. A Vercel serverless function that connects to Claude AI
 
-Whether you choose to use this template or another one, you can use your preferred package manager and the Shopify CLI with [these steps](#installing-the-template).
+## Features
 
-## Benefits
-
-Shopify apps are built on a variety of Shopify tools to create a great merchant experience. The [create an app](https://shopify.dev/docs/apps/getting-started/create) tutorial in our developer documentation will guide you through creating a Shopify app.
-
-This app template does little more than install the CLI and scaffold a repository.
+- Clean, modern chat interface that matches your store's design
+- Powered by Claude AI for intelligent responses
+- Maintains conversation context for natural interactions
+- Easy to deploy and manage
 
 ## Getting started
 
@@ -20,55 +21,41 @@ This app template does little more than install the CLI and scaffold a repositor
 1. You must [create a Shopify partner account](https://partners.shopify.com/signup) if you don’t have one.
 1. You must create a store for testing if you don't have one, either a [development store](https://help.shopify.com/en/partners/dashboard/development-stores#create-a-development-store) or a [Shopify Plus sandbox store](https://help.shopify.com/en/partners/dashboard/managing-stores/plus-sandbox-store).
 
-### Installing the template
+### Deployment Steps
 
-This template can be installed using your preferred package manager:
+#### 1. Deploy the Vercel API
 
-Using yarn:
+1. Fork or clone this repository
+2. Create a `.env` file from `.env.example` and add your Claude API key
+3. Install the Vercel CLI: `npm install -g vercel`
+4. Deploy to Vercel:
+   ```shell
+   vercel login
+   vercel
+   ```
+5. Follow the prompts to deploy
+6. Note the deployment URL (e.g., `https://your-app-name.vercel.app`)
 
-```shell
-yarn create @shopify/app
-```
+#### 2. Update the Chat API URL
 
-Using npm:
+1. Open `extensions/chatbot/assets/chat.js`
+2. Replace the `apiUrl` with your Vercel deployment URL:
+   ```javascript
+   const apiUrl = 'https://your-app-name.vercel.app/api/chat';
+   ```
 
-```shell
-npm init @shopify/app@latest
-```
+#### 3. Deploy the Shopify Extension
 
-Using pnpm:
+1. Install dependencies: `npm install`
+2. Connect to your Shopify Partner account: `npm run shopify auth`
+3. Deploy the app to your development store:
+   ```shell
+   npm run dev
+   ```
+4. Open the URL generated in your console
+5. Test the chat functionality on your development store
 
-```shell
-pnpm create @shopify/app@latest
-```
-
-This will clone the template and install the required dependencies.
-
-#### Local Development
-
-[The Shopify CLI](https://shopify.dev/docs/apps/tools/cli) connects to an app in your Partners dashboard. It provides environment variables and runs commands in parallel.
-
-You can develop locally using your preferred package manager. Run one of the following commands from the root of your app.
-
-Using yarn:
-
-```shell
-yarn dev
-```
-
-Using npm:
-
-```shell
-npm run dev
-```
-
-Using pnpm:
-
-```shell
-pnpm run dev
-```
-
-Open the URL generated in your console. Once you grant permission to the app, you can start development (such as generating extensions).
+Open the URL generated in your console. Once you grant permission to the app, you can start using the Claude-powered chat on your store.
 
 ## Developer resources
 

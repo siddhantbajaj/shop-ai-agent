@@ -36,7 +36,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
-  function sendMessage() {
+  // Store conversation ID in sessionStorage
+  let conversationId = sessionStorage.getItem('shopAiConversationId');
+  
+  async function sendMessage() {
     const userMessage = chatInput.value.trim();
     
     // Add user message to chat
@@ -48,12 +51,51 @@ document.addEventListener('DOMContentLoaded', function() {
     // Show typing indicator
     showTypingIndicator();
     
-    // For UI demo purposes only - simulate response
-    // This will be replaced with actual Claude API integration
-    setTimeout(() => {
+    try {
+      // Get your deployed Vercel URL (replace with your actual URL)
+      const apiUrl = 'https://shop-ai-agent.vercel.app/api/chat';
+      
+      // First check if the API is reachable
+      try {
+        const healthCheck = await fetch('https://shop-ai-agent.vercel.app/api/health');
+        if (!healthCheck.ok) {
+          console.warn('Health check failed, API may be down');
+        }
+      } catch (healthError) {
+        console.error('Health check error:', healthError);
+      }
+      
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: userMessage,
+          conversation_id: conversationId
+        })
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(`API request failed: ${response.status} ${errorData.error || response.statusText}`);
+      }
+      
+      const data = await response.json();
+      
+      // Save conversation ID for future messages
+      if (data.conversation_id) {
+        conversationId = data.conversation_id;
+        sessionStorage.setItem('shopAiConversationId', conversationId);
+      }
+      
       removeTypingIndicator();
-      addMessage("Thanks for your message! This is a placeholder response. In the final implementation, this will be powered by Claude.", 'assistant');
-    }, 1500);
+      addMessage(data.response, 'assistant');
+    } catch (error) {
+      console.error('Error communicating with Claude API:', error);
+      removeTypingIndicator();
+      addMessage("Sorry, I couldn't process your request at the moment. Please try again later.", 'assistant');
+    }
   }
 
   function addMessage(text, sender) {
