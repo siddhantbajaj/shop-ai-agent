@@ -73,7 +73,10 @@ document.addEventListener('DOMContentLoaded', function() {
   async function streamResponse(userMessage) {
     try {
       // Base API URL from environment config
-      const baseUrl = window.SHOP_AI_CONFIG?.baseUrl;
+      const baseUrl = window.SHOP_AI_CONFIG?.baseUrl || '';
+      
+      // Log the base URL for debugging
+      console.log('Using API base URL:', baseUrl);
       
       // Create message element for the assistant's response
       const messageElement = document.createElement('div');
@@ -155,7 +158,10 @@ document.addEventListener('DOMContentLoaded', function() {
   // Regular non-streaming API response
   async function regularResponse(userMessage) {
     // Get base URL from environment config
-    const baseUrl = window.SHOP_AI_CONFIG?.baseUrl;
+    const baseUrl = window.SHOP_AI_CONFIG?.baseUrl || '';
+    
+    // Log the base URL for debugging
+    console.log('Using API base URL (regular):', baseUrl);
     
     // First check if the API is reachable
     try {

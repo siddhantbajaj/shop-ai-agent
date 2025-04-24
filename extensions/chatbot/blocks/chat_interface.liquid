@@ -29,7 +29,7 @@
 
 <script>
   window.SHOP_AI_CONFIG = {
-    baseUrl: "{{ env.BASE_URL }}"
+    baseUrl: "{{ block.settings.api_base_url }}"
   };
 </script>
 
@@ -51,6 +51,13 @@
       "id": "welcome_message",
       "label": "Welcome Message",
       "default": "👋 Hi there! How can I help you today?"
+    },
+    {
+      "type": "text",
+      "id": "api_base_url",
+      "label": "API Base URL",
+      "default": "",
+      "info": "The base URL for the AI backend service"
     }
   ]
 }
